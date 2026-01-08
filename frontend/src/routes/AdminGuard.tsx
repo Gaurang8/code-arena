@@ -1,0 +1,14 @@
+import { useAppSelector } from "@/app/hooks";
+import type { JSX } from "react";
+import { ROUTES } from "./path";
+import { Navigate } from "react-router-dom";
+
+export default function AdminGuard({ children }: { children: JSX.Element }) {
+  const { user, loading } = useAppSelector((s) => s.auth);
+
+  if (loading.me) return <div>Loading...</div>;
+  if (!user) return <Navigate to={ROUTES.LOGIN} replace />;
+  if (user.role !== "ADMIN") return <Navigate to={ROUTES.HOME} replace />;
+
+  return children;
+}

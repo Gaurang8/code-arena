@@ -1,0 +1,46 @@
+# ==============================
+# GLOBAL
+# ==============================
+.DS_Store
+Thumbs.db
+*.log
+
+# ==============================
+# ENV FILES (CRITICAL)
+# ==============================
+.env
+.env.*
+!.env.example
+
+# ==============================
+# PYTHON / DJANGO (BACKEND)
+# ==============================
+backend/venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/db.sqlite3
+backend/.pytest_cache/
+backend/staticfiles/
+backend/media/
+
+# ==============================
+# NODE / REACT (FRONTEND)
+# ==============================
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.eslintcache
+
+# ==============================
+# BUILD / CACHE
+# ==============================
+*.tsbuildinfo
+.cache/
+
+# ==============================
+# IDE / EDITOR
+# ==============================
+.vscode/
+.idea/
+*.swp
+*.swo
