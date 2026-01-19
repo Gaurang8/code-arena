@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/app/hooks";
 import { LoginForm } from "@/components/LoginForm";
-import { CodeXml, GalleryVerticalEnd } from "lucide-react";
+import { CodeXml } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
