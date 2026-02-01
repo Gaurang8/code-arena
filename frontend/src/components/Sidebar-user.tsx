@@ -23,11 +23,23 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { logoutUser } from "@/features/auth/authThunks";
+import { toast } from "sonner";
 
 export function NavUser() {
+  const dispatch = useAppDispatch();
   const { isMobile } = useSidebar();
   const { user } = useAppSelector((s) => s.auth);
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+      toast.success("Logout successful!");
+    } catch (error) {
+      toast.error(error as string);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -94,8 +106,11 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
+            <DropdownMenuItem
+              className="text-destructive"
+              onClick={handleLogout}
+            >
+              <LogOut className="text-destructive" />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

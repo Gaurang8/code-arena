@@ -20,6 +20,7 @@ import { loginSchema, type LoginFormData } from "@/features/auth/type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "@/app/hooks";
+import { toast } from "sonner";
 
 export function LoginForm() {
   const {
@@ -33,15 +34,12 @@ export function LoginForm() {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.auth);
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      dispatch(loginUser(data))
-        .unwrap()
-        .then(() => {
-          alert("Login successful");
-        });
-    } catch {
-      alert("error");
+      await dispatch(loginUser(data)).unwrap();
+      toast.success("Login successful!");
+    } catch (error) {
+      toast.error(error as string);
     }
   };
 

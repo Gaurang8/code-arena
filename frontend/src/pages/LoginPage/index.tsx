@@ -7,7 +7,6 @@ const LoginPage = () => {
   const { user, loading } = useAppSelector((s) => s.auth);
   const navigate = useNavigate();
 
-  // If already logged in, redirect to home page
   if (loading.me) {
     return <div>Loading...</div>;
   }

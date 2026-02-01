@@ -1,14 +1,6 @@
 import { z } from 'zod';
 
 export type UserRole = "ADMIN" | "LEARNER";
-
-export interface User {
-    id: number;
-    username: string;
-    email: string;
-    role: UserRole;
-}
-
 export interface AuthLoading {
     login: boolean;
     register: boolean;
@@ -30,9 +22,26 @@ export interface AuthState {
     isAuthenticated: boolean;
 }
 
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    role: UserRole;
+}
+
+
+// Login types
 export interface LoginUserPayload {
     email: string;
     password: string;
+}
+
+export interface LoginResponse {
+    user: User;
+    tokens: {
+        access: string;
+        refresh: string;
+    };
 }
 
 export const loginSchema = z.object({
@@ -41,3 +50,19 @@ export const loginSchema = z.object({
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
+
+
+// Register types
+export interface RegisterUserPayload {
+    username: string;
+    email: string;
+    password: string;
+}
+
+export const registerSchema = z.object({
+    username: z.string().min(3, { message: 'Username must be at least 3 characters' }),
+    email: z.string().email({ message: 'Invalid email address' }),
+    password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
+});
+
+export type RegisterFormData = z.infer<typeof registerSchema>;

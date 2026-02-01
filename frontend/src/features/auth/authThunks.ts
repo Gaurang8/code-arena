@@ -1,11 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { LoginUserPayload, User } from "./type";
-import { loadUserApi, loginApi } from "@/services/auth";
+import type { LoginResponse, LoginUserPayload, RegisterUserPayload, User } from "./type";
+import { loadUserApi, loginApi, logoutApi, refreshTokenApi, registerApi } from "@/services/auth";
+import type { ApiResponse } from "@/features/common-type";
+import { formatErrorMessage } from "@/lib/generalFun";
 import type { AxiosError } from "axios";
 
 
 export const loginUser = createAsyncThunk<
-    User,
+    ApiResponse<LoginResponse>,
     LoginUserPayload,
     { rejectValue: string }
 >(
@@ -15,14 +17,29 @@ export const loginUser = createAsyncThunk<
             const response = await loginApi(params);
             return response.data;
         } catch (error) {
-            const axiosError = error as AxiosError<{ message: string; status?: number; }>;
-            return rejectWithValue(axiosError?.response?.data?.message || "Login failed");
+            return rejectWithValue(formatErrorMessage(error as AxiosError, "Login failed"));
+        }
+    }
+);
+
+export const registerUser = createAsyncThunk<
+    ApiResponse<LoginResponse>,
+    RegisterUserPayload,
+    { rejectValue: string }
+>(
+    "auth/registerUser",
+    async (params, { rejectWithValue }) => {
+        try {
+            const response = await registerApi(params);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(formatErrorMessage(error as AxiosError, "Registration failed"));
         }
     }
 );
 
 export const loadUser = createAsyncThunk<
-    User,
+    ApiResponse<User>,
     void,
     { rejectValue: string }
 >(
@@ -32,8 +49,40 @@ export const loadUser = createAsyncThunk<
             const response = await loadUserApi();
             return response.data;
         } catch (error) {
-            const axiosError = error as AxiosError<{ message: string; status?: number; }>;
-            return rejectWithValue(axiosError?.response?.data?.message || "Load user failed");
+            return rejectWithValue(formatErrorMessage(error as AxiosError, "Load user failed"));
+        }
+    }
+);
+
+export const logoutUser = createAsyncThunk<
+    ApiResponse<void>,
+    void,
+    { rejectValue: string }
+>(
+    "auth/logoutUser", async (_, { rejectWithValue }) => {
+        try {
+            const response = await logoutApi();
+            return response.data;
+        } catch (error) {
+            console.log("Logout error:", error);
+            return rejectWithValue(formatErrorMessage(error as AxiosError, "Logout failed"));
+        }
+    }
+);
+
+export const refreshToken = createAsyncThunk<
+    {
+        access: string;
+    },
+    void,
+    { rejectValue: string }
+>(
+    "auth/refreshToken", async (_, { rejectWithValue }) => {
+        try {
+            const response = await refreshTokenApi();
+            return response.data as { access: string };
+        } catch (error) {
+            return rejectWithValue(formatErrorMessage(error as AxiosError, "Token refresh failed"));
         }
     }
 );
