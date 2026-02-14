@@ -3,12 +3,15 @@
 import * as React from "react";
 import {
   CodeXml,
-  Frame,
+  FileQuestion,
+  Group,
+  Languages,
+  LayoutDashboard,
   LifeBuoy,
   ListTodo,
-  Map,
-  PieChart,
   Send,
+  User2,
+  UsersIcon,
 } from "lucide-react";
 
 import {
@@ -42,21 +45,40 @@ const data = {
       icon: ListTodo,
     },
   ],
-  projects: [
+  analytics: [
     {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
+      name: "Dashboard",
+      url: "/",
+      icon: LayoutDashboard,
+    },
+  ],
+  accounts: [
+    {
+      name: "Users",
+      url: "/users",
+      icon: User2,
     },
     {
-      name: "Sales & Marketing",
+      name: "Teams",
       url: "#",
-      icon: PieChart,
+      icon: UsersIcon,
+    },
+  ],
+  problems: [
+    {
+      name: "Problems",
+      url: "/problems",
+      icon: FileQuestion,
     },
     {
-      name: "Travel",
+      name: "Categories",
       url: "#",
-      icon: Map,
+      icon: Group,
+    },
+    {
+      name: "Languages",
+      url: "#",
+      icon: Languages,
     },
   ],
 };
@@ -82,7 +104,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavProjects projects={data.projects} />
+        <NavProjects title="Analytics" projects={data.analytics} />
+        <NavProjects title="Accounts" projects={data.accounts} />
+        <NavProjects title="Problems" projects={data.problems} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
